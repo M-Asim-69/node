@@ -1,21 +1,25 @@
 // require('dotenv').config({path:'./.env'});  Just for learning purpose we are not removing the comment
 import dotenv from 'dotenv';
-import express from 'express';
 import connectDB from './db/index.js';
+import { app } from './app.js';
 
 dotenv.config({
     path:'./.env'
 })
 
-const app = express();
+const PORT = process.env.PORT;
 
-connectDB();
-const PORT = process.env.PORT
-
-app.listen(PORT,()=>{
-    console.log(`my app is running on this port ${PORT}`);
+connectDB()
+.then(()=>{
+    app.listen(PORT,()=>{
+        console.log(`Server is running on PORT ${PORT}`);
+    })
+    app.on('error in app.on',(error)=>{
+        console.log('This is the error i am getting from app.on',error);
+        
+    })
+})
+.catch((error)=>{
+    console.log('This is error from catch block of connectDB',error);
 })
 
-app.get('/',(req,res)=>{
-    res.send("Hello World from my express app");
-})
